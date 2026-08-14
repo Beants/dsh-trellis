@@ -1,0 +1,40 @@
+{
+  "name": "dsh-trellis",
+  "version": "0.1.0",
+  "description": "Trellis workflow integration for DeepSeek Harness: Trellis skills, /trellis commands, and .trellis scaffolding",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "assets",
+    "scripts",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "trellis",
+    "cordis",
+    "workflow",
+    "agent"
+  ],
+  "license": "AGPL-3.0-only",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mindfold-ai/Trellis"
+  }
+}
