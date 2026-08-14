@@ -38,6 +38,26 @@ DSH 没有 hook，本插件把每个 hook 映射为 DSH 的等价机制：
 - 任务状态解析对齐 Trellis 自身契约：只信任 `.trellis/.runtime/sessions/` 下**恰好一个**指针文件（多窗口隔离），再回退 `.trellis/.current-task`；
 - 非 Trellis 工作区完全不打扰（不注册 section）。
 
+### 注入效果示例
+
+每轮 prompt 组装时，`app:trellis` section 会注入类似下面的块（正文来自
+workflow.md 对应 `[workflow-state:STATUS]` 标签，不是写死的文案）：
+
+```xml
+<trellis-workflow>
+Status: no_task
+No active task. First classify the current turn and ask for task-creation consent before creating any Trellis task.
+Simple conversation / small task: ask only whether this turn should create a Trellis task. ...
+
+This workspace uses the Trellis workflow. Follow it: load the `trellis-start` skill at session start and when a new task arrives, route per the skill routing table in `.trellis/workflow.md`, and run `python3 .trellis/scripts/get_context.py` / `task.py current` for live state. Do not skip the DO-NOT-skip steps.
+</trellis-workflow>
+```
+
+有活动任务时，首行变成 `Task: <id> (<status>)`，正文换成对应阶段（
+`planning` / `in_progress` / `completed`…）的指引。完整会话上下文
+（developer、git 状态、spec 索引）仍需模型按 `trellis-start` 技能用 bash
+拉取——注入的是"轨道"，不是"全量数据"。
+
 ## 前置要求
 
 - 正在运行的 DeepSeek Harness profile（如 `dsh web`）
