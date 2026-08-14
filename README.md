@@ -9,6 +9,21 @@ Cordis 插件：注册 Trellis 全套技能（`trellis-start` / `trellis-brainst
 > 配套的上游支持：Trellis CLI 现已支持 `trellis init --dsh`，可在项目里直接
 > 生成 `.dsh/skills/`（见 [Trellis 仓库的 dsh 平台注册](#trellis-上游-dsh-平台)）。
 
+## 本项目是如何实现的
+
+本项目（本插件 + Trellis 上游的 `dsh` 平台注册）**完全由 DeepSeek V4 Flash
+（max reasoning effort）+ DeepSeek Harness (dsh) 会话完成**，无人工手写代码：
+
+- 插件设计：研究 DSH 的 Cordis 插件机制（`ctx.skills` / `ctx.commands` /
+  `systemPrompt.section` / `agent/created` 事件）与 Trellis 的 14 平台
+  集成架构（`AI_TOOLS` 注册表 + configurator + 模板渲染），确定 DSH 无 hook
+  场景下的等价注入方案（pull-based 技能 + 每轮重算的 prompt section）；
+- 实现：技能内容由 Trellis CLI `init --dsh` 渲染产物同步（`prepare-assets.mjs`），
+  命令、脚手架、面包屑注入均为 dsh 会话中编写；
+- 上游合并：拉取 Trellis 292 个落后提交，解决 7 处冲突（含上游新增 7 个平台），
+  1672 个测试全绿后推送；
+- 发布：GitHub CLI 建仓、topic、可见性配置均在本会话完成。
+
 ## 安装（web profile 示例）
 
 ```bash
